@@ -104,31 +104,39 @@ layar mana pun dan bisa diuji tanpa menjalankan aplikasi:
 ## Arsitektur
 
 Proyek memakai pemisahan lapisan ala *clean architecture* yang disederhanakan.
-Aturannya satu arah: **UI → Repository → Datasource**. UI tidak pernah menyentuh
+Panggilan mengalir satu arah ke bawah (garis penuh), sedangkan perubahan koleksi
+kembali ke atas sebagai `Stream` (garis putus-putus). UI tidak pernah menyentuh
 SQLite atau HTTP secara langsung.
 
-```
-┌──────────────────────────────────────────────────────┐
-│  Presentation        screens.dart · main.dart        │
-│                      RootTabs, CollectionTab,        │
-│                      SearchTab, DetailScreen         │
-└───────────────────────────┬──────────────────────────┘
-                            │ context.watch / read
-┌───────────────────────────▼──────────────────────────┐
-│  State               movie_store.dart                │
-│                      MovieStore (ChangeNotifier)     │
-└───────────────────────────┬──────────────────────────┘
-                            │ memanggil aksi
-┌───────────────────────────▼──────────────────────────┐
-│  Domain / Rules      movie_repository.dart           │
-│                      aturan bisnis + Stream koleksi  │
-└──────────┬─────────────────────────────┬─────────────┘
-           │                             │
-┌──────────▼─────────────┐   ┌───────────▼─────────────┐
-│  Local                 │   │  Remote                 │
-│  MovieLocalDatasource  │   │  TmdbApiService         │
-│  └ SqfliteMovie...     │   │  └ TMDB API v3          │
-└────────────────────────┘   └─────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph presentation["Presentation"]
+        UI["RootTabs · CollectionTab · SearchTab · DetailScreen<br/><code>screens.dart</code>"]
+    end
+
+    subgraph state["State"]
+        STORE["MovieStore<br/><code>movie_store.dart</code>"]
+    end
+
+    subgraph domain["Domain"]
+        REPO["MovieRepository<br/>aturan bisnis + Stream koleksi<br/><code>movie_repository.dart</code>"]
+    end
+
+    subgraph data["Data"]
+        LOCAL["SqfliteMovieDatasource<br/><code>sqflite_movie_datasource.dart</code>"]
+        REMOTE["TmdbApiService<br/><code>tmdb_api.dart</code>"]
+    end
+
+    DB[("sinelog.db<br/>SQLite")]
+    TMDB{{"TMDB API v3"}}
+
+    UI -->|"context.watch / read"| STORE
+    STORE -->|"aksi"| REPO
+    REPO -.->|"Stream&lt;List&lt;Movie&gt;&gt;"| STORE
+    REPO --> LOCAL
+    REPO --> REMOTE
+    LOCAL --> DB
+    REMOTE -->|"HTTP"| TMDB
 ```
 
 Keputusan desain yang perlu diketahui:
