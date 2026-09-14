@@ -309,8 +309,6 @@ Koleksi diurutkan `id DESC` sehingga film yang terakhir ditambahkan tampil palin
 - [ ] Memecah `screens.dart` menjadi berkas per layar
 - [ ] Memisahkan state menjadi `CollectionStore`, `SearchStore`, dan `DetailStore`
 
-Rencana pengerjaan selengkapnya ada di [`RENCANA_PENGERJAAN.md`](RENCANA_PENGERJAAN.md).
-
 ## Lisensi & Atribusi
 
 Proyek ini dibuat untuk keperluan pembelajaran.

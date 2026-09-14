@@ -47,3 +47,6 @@ app.*.map.json
 # Widget Preview related
 .widget_preview/
 tmdb.local.properties
+
+# Dokumen internal, tidak untuk publik
+RENCANA_PENGERJAAN.md
