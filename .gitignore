@@ -50,6 +50,7 @@ tmdb.local.properties
 
 # Dokumen internal, tidak untuk publik
 RENCANA_PENGERJAAN.md
+CATATAN_STRUKTUR.md
 
 # Hasil build laporan Typst
 docs/*.pdf
