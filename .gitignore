@@ -54,3 +54,6 @@ CATATAN_STRUKTUR.md
 
 # Hasil build laporan Typst
 docs/*.pdf
+
+# Bahan Play Store (aset, checklist, kebijakan privasi), hanya lokal
+/store/

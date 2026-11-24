@@ -32,7 +32,6 @@ flutter build appbundle --release --dart-define-from-file=tmdb.local.properties
 # hasil: build/app/outputs/bundle/release/app-release.aab (untuk Play Store)
 ```
 
-Checklist rilis Play Store ada di [store/PLAY_STORE.md](store/PLAY_STORE.md).
 
 Release ditandatangani dengan upload key dari `android/key.properties`
 (isi: `storePassword`, `keyPassword`, `keyAlias`, `storeFile`). File itu
@@ -52,7 +51,6 @@ lib/app_state.dart     # koleksi + rating pribadi, disimpan di SQLite
 lib/services/          # akses API TMDB
 lib/features/          # halaman Cari dan Collection
 assets/images/logo.png # sumber logo & launcher icon
-store/                 # aset & teks untuk Play Store
 docs/                  # laporan per tahap (Typst)
 RENCANA_PENGERJAAN.md  # rencana pengerjaan bertahap
 ```

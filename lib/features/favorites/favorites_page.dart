@@ -16,15 +16,18 @@ class FavoritesPage extends StatelessWidget {
       return const Center(child: Text('Belum ada film di koleksi.'));
     }
 
-    return ListView(
-      padding: const EdgeInsets.all(8),
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text('${appState.favorites.length} film di koleksi'),
-        ),
-        for (final fav in appState.favorites) _FavoriteCard(movie: fav),
-      ],
+    // SafeArea: tanpa ini baris pertama tertimpa status bar.
+    return SafeArea(
+      child: ListView(
+        padding: const EdgeInsets.all(8),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text('${appState.favorites.length} film di koleksi'),
+          ),
+          for (final fav in appState.favorites) _FavoriteCard(movie: fav),
+        ],
+      ),
     );
   }
 }
@@ -97,7 +100,7 @@ class _FavoriteCard extends StatelessWidget {
                         spacing: 2,
                         children: [
                           const Icon(Icons.star, color: Colors.amber, size: 16),
-                          Text(movie.rating.toString()),
+                          Text(movie.rating.toStringAsFixed(1)),
                         ],
                       ),
                     ],

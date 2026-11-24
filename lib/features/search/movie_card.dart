@@ -53,7 +53,7 @@ class MovieCard extends StatelessWidget {
                         spacing: 2,
                         children: [
                           const Icon(Icons.star, color: Colors.amber, size: 16),
-                          Text(movie.rating.toString()),
+                          Text(movie.rating.toStringAsFixed(1)),
                         ],
                       ),
                     ],

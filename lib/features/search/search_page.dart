@@ -69,7 +69,7 @@ class _SearchPageState extends State<SearchPage> {
                       // Kalau file belum ada, tidak tampil apa-apa.
                       Image.asset(
                         'assets/images/tmdb_logo.png',
-                        height: 20,
+                        height: 36,
                         alignment: Alignment.centerLeft,
                         errorBuilder: (_, _, _) => const SizedBox.shrink(),
                       ),
