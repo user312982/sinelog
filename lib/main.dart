@@ -4,17 +4,23 @@ import 'package:provider/provider.dart';
 import 'app_state.dart';
 import 'shell/home_shell.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final state = MyAppState(await openCollectionDb());
+  await state.load();
+  runApp(MyApp(state: state));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  /// Null = state baru tanpa database (dipakai di widget test).
+  final MyAppState? state;
+
+  const MyApp({super.key, this.state});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+      create: (context) => state ?? MyAppState(),
       child: MaterialApp(
         title: 'Sinelog',
         theme: ThemeData.dark(useMaterial3: true),

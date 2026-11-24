@@ -5,15 +5,15 @@ import '../../app_state.dart';
 import '../../models/movie.dart';
 import '../../widgets/movie_poster.dart';
 
-class FavoritePages extends StatelessWidget {
-  const FavoritePages({super.key});
+class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    final appState = context.watch<MyAppState>();
 
     if (appState.favorites.isEmpty) {
-      return const Center(child: Text('There no Favorites yet.'));
+      return const Center(child: Text('Belum ada film di koleksi.'));
     }
 
     return ListView(
@@ -21,9 +21,9 @@ class FavoritePages extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(8),
-          child: Text('You have ${appState.favorites.length}'),
+          child: Text('${appState.favorites.length} film di koleksi'),
         ),
-        for (var fav in appState.favorites) _FavoriteCard(movie: fav),
+        for (final fav in appState.favorites) _FavoriteCard(movie: fav),
       ],
     );
   }
@@ -46,7 +46,7 @@ class _FavoriteCard extends StatelessWidget {
         child: Row(
           spacing: 12,
           children: [
-            MoviePoster(posterAsset: movie.posterAsset),
+            MoviePoster(posterUrl: movie.posterUrl),
             Expanded(
               child: Column(
                 spacing: 4,
@@ -60,8 +60,30 @@ class _FavoriteCard extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {
-                          appState.toggleDeleteFavorites(movie);
+                        tooltip: 'Hapus dari koleksi',
+                        onPressed: () async {
+                          // Konfirmasi dulu: rating pribadi ikut terhapus.
+                          final ok = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Hapus dari koleksi?'),
+                              content: Text(
+                                '"${movie.title}" dan rating pribadinya akan dihapus.',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, false),
+                                  child: const Text('Batal'),
+                                ),
+                                FilledButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: const Text('Hapus'),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (ok == true) appState.removeFavorite(movie);
                         },
                         icon: const Icon(Icons.bookmark, color: Colors.red),
                       ),
@@ -91,7 +113,7 @@ class _FavoriteCard extends StatelessWidget {
                               child: Icon(
                                 i <= myRating ? Icons.star : Icons.star_border,
                                 size: 22,
-                                color: Colors.yellow,
+                                color: Colors.amber,
                               ),
                             ),
                         ],

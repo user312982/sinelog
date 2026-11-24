@@ -22,11 +22,37 @@ flutter test                   # mulai dipakai di tahap 2
 flutter build apk --debug
 ```
 
+## Build release
+
+```bash
+flutter build apk --release --dart-define-from-file=tmdb.local.properties
+# hasil: build/app/outputs/flutter-apk/app-release.apk
+
+flutter build appbundle --release --dart-define-from-file=tmdb.local.properties
+# hasil: build/app/outputs/bundle/release/app-release.aab (untuk Play Store)
+```
+
+Checklist rilis Play Store ada di [store/PLAY_STORE.md](store/PLAY_STORE.md).
+
+Release ditandatangani dengan upload key dari `android/key.properties`
+(isi: `storePassword`, `keyPassword`, `keyAlias`, `storeFile`). File itu
+dan keystore `.jks` tidak ikut di-commit — simpan cadangannya sendiri.
+
+## Sumber data & gambar
+
+Koleksi dan rating pribadi disimpan di SQLite di perangkat. Data dan poster film diambil dari [TMDB](https://www.themoviedb.org) lewat
+API (tidak ada poster yang dibundel di aplikasi). Atribusi TMDB ada di tombol
+info di halaman Cari. Film dewasa disaring dengan `include_adult=false`.
+
 ## Struktur
 
 ```
-lib/main.dart          # entry point — saat ini Hello World + logo
+lib/main.dart          # entry point, buka database lalu jalankan app
+lib/app_state.dart     # koleksi + rating pribadi, disimpan di SQLite
+lib/services/          # akses API TMDB
+lib/features/          # halaman Cari dan Collection
 assets/images/logo.png # sumber logo & launcher icon
+store/                 # aset & teks untuk Play Store
 docs/                  # laporan per tahap (Typst)
 RENCANA_PENGERJAAN.md  # rencana pengerjaan bertahap
 ```

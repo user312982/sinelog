@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
 
 import '../../app_state.dart';
 import '../../models/movie.dart';
 import '../../widgets/movie_poster.dart';
-
-import 'package:readmore/readmore.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -24,7 +23,7 @@ class MovieCard extends StatelessWidget {
         child: Row(
           spacing: 12,
           children: [
-            MoviePoster(posterAsset: movie.posterAsset),
+            MoviePoster(posterUrl: movie.posterUrl),
             Expanded(
               child: Column(
                 spacing: 4,
@@ -66,21 +65,13 @@ class MovieCard extends StatelessWidget {
                       trimMode: TrimMode.Line,
                       trimLines: 2,
                       colorClickableText: Colors.pink,
-                      trimCollapsedText: 'Show more',
-                      trimExpandedText: 'Show less',
-                      moreStyle: TextStyle(
+                      trimCollapsedText: 'Selengkapnya',
+                      trimExpandedText: 'Ringkas',
+                      moreStyle: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    //
-                    // Text(
-                    //
-                    //   movie.overview,
-                    //   maxLines: 2,
-                    //   overflow: TextOverflow.visible,
-                    //   style: Theme.of(context).textTheme.bodySmall,
-                    // ),
                   ),
                 ],
               ),

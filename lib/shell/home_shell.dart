@@ -15,20 +15,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = const SearchPage();
-        break;
-      case 1:
-        page = const FavoritePages();
-        break;
-      default:
-        throw UnimplementedError('no Widget for $selectedIndex');
-    }
-
     return Scaffold(
-      body: page,
+      // IndexedStack menyimpan semua tab, jadi state halaman (teks pencarian,
+      // nomor halaman, posisi scroll) tidak hilang saat pindah tab.
+      body: IndexedStack(
+        index: selectedIndex,
+        children: const [SearchPage(), FavoritesPage()],
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: (value) {
@@ -37,10 +30,10 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         },
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.search), label: ('Cari')),
+          NavigationDestination(icon: Icon(Icons.search), label: 'Cari'),
           NavigationDestination(
             icon: Icon(Icons.video_collection_sharp),
-            label: ('Collection'),
+            label: 'Koleksi',
           ),
         ],
       ),

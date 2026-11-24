@@ -3,7 +3,13 @@ import 'package:sinelog/app_state.dart';
 import 'package:sinelog/models/movie.dart';
 
 void main() {
-  final inception = dummyMovies[0];
+  const inception = Movie(
+    id: 27205,
+    title: 'Inception',
+    year: '2010',
+    rating: 8.8,
+    overview: '',
+  );
 
   test('toggleFavorites menambah lalu menghapus film', () {
     final state = MyAppState();
@@ -29,7 +35,7 @@ void main() {
     final state = MyAppState()..toggleFavorites(inception);
     state.setMyRating(inception, 4);
 
-    state.toggleDeleteFavorites(inception);
+    state.removeFavorite(inception);
 
     expect(state.favorites, isEmpty);
     expect(state.myRatingFor(inception), isNull);

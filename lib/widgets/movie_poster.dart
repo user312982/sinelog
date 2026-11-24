@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
-/// Poster film (56x84, rasio umum poster) dengan fallback ikon kalau
-/// posterAsset null atau gagal dimuat. Dipakai di SearchPage & Collection.
+/// Poster film (56x84, rasio umum poster) dari URL TMDB, dengan fallback
+/// ikon kalau posterUrl null atau gagal dimuat. Dipakai di Search & Collection.
 class MoviePoster extends StatelessWidget {
-  final String? posterAsset;
+  final String? posterUrl;
 
-  const MoviePoster({super.key, required this.posterAsset});
+  const MoviePoster({super.key, required this.posterUrl});
 
   @override
   Widget build(BuildContext context) {
+    final url = posterUrl;
     return ClipRRect(
       borderRadius: BorderRadius.circular(4),
-      child: posterAsset != null
-          ? Image.asset(
-              posterAsset!,
+      child: url == null
+          ? const _PosterPlaceholder()
+          : Image.network(
+              url,
               width: 56,
               height: 84,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
-                  const _PosterPlaceholder(),
-            )
-          : const _PosterPlaceholder(),
+              errorBuilder: (_, _, _) => const _PosterPlaceholder(),
+            ),
     );
   }
 }
